@@ -188,3 +188,10 @@ Make sure to replace `<access_token>` with the actual token received during logi
 ## 📜 License
 
 This project is licensed under the [MIT License](LICENSE).
+
+**Author**: Zerebel
+
+**Follow me on:**
+
+- [GitHub](https://github.com/zerebel)
+- [Twitter](https://twitter.com/zerebel_)
