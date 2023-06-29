@@ -2,50 +2,6 @@
 
 This is a backend API for a blog application that allows users to create view update and delete posts. Users can authenticate and perform actions on their own posts.
 
-## ⚙️ Setup
-
-### Prerequisites
-
-- Node.js (version >= 12)
-- MongoDB (local or cloud)
-
-### Installation
-
-1. Clone the repository:
-
-   ```shell
-   git clone https://github.com/Zerebel/blog-api.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```shell
-   cd blog-api
-   ```
-
-3. Install the dependencies:
-
-   ```shell
-   npm install
-   ```
-
-4. Create a `.env` file in the root directory and provide the following environment variables:
-
-   ```plaintext
-   PORT=3000
-   JWT_SECRET=your-secret-key
-   ```
-
-   Replace `your-secret-key` with your own secret key for JWT token generation.
-
-5. Start the server:
-
-   ```shell
-   npm start
-   ```
-
-6. The API is now running locally at `http://localhost:3000`.
-
 ## 📖 API Documentation
 
 ### Authentication
