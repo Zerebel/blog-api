@@ -189,7 +189,7 @@ Make sure to replace `<access_token>` with the actual token received during logi
 
 This project is licensed under the [MIT License](LICENSE).
 
-**Author**: Zerebel
+## 🔹**Author**: Zerebel
 
 **Follow me on:**
 
