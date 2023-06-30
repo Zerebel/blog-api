@@ -7,8 +7,6 @@ import {
   updateEmail,
   updatePassword,
   signOut,
-  signInWithPopup,
-  GoogleAuthProvider,
 } from "firebase/auth";
 import useLocalStorage from "./use-local-storage";
 import PropTypes from "prop-types";
@@ -52,11 +50,6 @@ export default function AuthProvider({ children }) {
     return signOut(auth);
   };
 
-  const signInWithPopup_ = async () => {
-    const provider = await new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
-  };
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -76,7 +69,6 @@ export default function AuthProvider({ children }) {
     setNewPassword,
     signOut_,
     error,
-    signInWithPopup_,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
