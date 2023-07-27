@@ -1,12 +1,14 @@
 import { createContext, useEffect, useState } from "react";
-import { app } from "./Config";
+import { auth } from "./Config";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  getAuth,
   updateEmail,
   updatePassword,
   signOut,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
 } from "firebase/auth";
 import useLocalStorage from "./use-local-storage";
 import PropTypes from "prop-types";
@@ -15,22 +17,36 @@ export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useLocalStorage("user", null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const auth = getAuth(app);
-
-  const signUp = async (email, password) => {
+  const signUp = async (email, password, location) => {
+    setLoading(true);
+    setError(null);
     return await createUserWithEmailAndPassword(auth, email, password)
-      .then(() => setError(false))
-      .catch(() => setError("Invalid email or password"));
+      .then(() => {
+        setLoading(false);
+        return "/";
+      })
+      .catch(() => {
+        setError("Unable to create user");
+        setLoading(false);
+        return location;
+      });
   };
 
-  const signIn = async (email, password) => {
+  const signIn = async (email, password, location) => {
+    setLoading(true);
+    setError(null);
     return await signInWithEmailAndPassword(auth, email, password)
-      .then(() => setError(false))
+      .then(() => {
+        setLoading(false);
+        return "/";
+      })
       .catch(() => {
         setError("Invalid email or password");
+        setLoading(false);
+        return location;
       });
   };
 
@@ -46,6 +62,43 @@ export default function AuthProvider({ children }) {
       .catch(() => setError("Error updating password"));
   };
 
+  const signInWithGoogle = async ({ location }) => {
+    setLoading(true);
+    setError(null);
+    const provider = new GoogleAuthProvider();
+    return await signInWithPopup(auth, provider)
+      .then(() => {
+        setLoading(false);
+        return "/";
+      })
+      .catch(() => {
+        setError("Authentication failed");
+        setLoading(false);
+        return location;
+      });
+  };
+
+  const signInWithGithub = async ({ location }) => {
+    setLoading(true);
+    const provider = new GithubAuthProvider();
+    provider.setCustomParameters({
+      allow_signup: "false",
+    });
+    return await signInWithPopup(auth, provider)
+      .then(() => {
+        setLoading(false);
+        return "/";
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        setError("Authentication failed");
+        if (errorMessage.includes("account-exists"))
+          setError("Account exists with different credential");
+        setLoading(false);
+        return location;
+      });
+  };
+
   const signOut_ = () => {
     return signOut(auth);
   };
@@ -58,17 +111,22 @@ export default function AuthProvider({ children }) {
     return () => {
       unsubscribe();
     };
-  }, [auth, setCurrentUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
 
   const value = {
     currentUser,
     loading,
+    setLoading,
     signIn,
     signUp,
     setNewEmail,
     setNewPassword,
     signOut_,
     error,
+    setError,
+    signInWithGoogle,
+    signInWithGithub,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,34 +1,53 @@
-import { useContext, useRef } from "react";
-import { AuthContext } from "../services/AuthContext";
+import { useContext } from "react";
 import Header from "./header";
+import AuthProvider, { AuthContext } from "../services/AuthContext";
+import BlogLogo from "../assets/blog.svg";
 
 export default function Dashboard() {
-  // const { currentUser, loading, signIn, signOut_, error, signUp } =
-  //   useContext(AuthContext);
-  // const emailRef = useRef();
-  // const passwordRef = useRef();
+  const { currentUser } = useContext(AuthContext);
+
   return (
-    <>
+    <AuthProvider>
       <Header />
       <main className="flex flex-col items-center font-Roboto text-lg">
-        <div className="flex flex-col gap-6 px-2 md:px-16 lg:px-24 ">
-          <h1 className="text-4xl font-semibold">
-            Welcome to the Blog API platform
+        <div className="flex flex-col px-2 md:px-16 lg:px-24 ">
+          <h1 className="text-4xl font-semibold flex items-center">
+            Welcome to the{" "}
+            <img src={BlogLogo} alt="Blog" className=" w-24 h-24" /> API
+            platform
           </h1>
           <h3 className="text-2xl font-medium">Start with the basics</h3>
           <article className="flex flex-col gap-8">
             <section className="grid lg:grid-cols-2 px-4 md:px-0 gap-4 min-h-[25vh]">
               <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded p-4 flex justify-end text-white md:w-96 flex-col gap-2">
-                <p>Learn by building a quick sample app</p>
+                <p>User API key</p>
                 <pre className="bg-gray-600 p-4 rounded">
-                  <code className="text-white">Login for API Key</code>
+                  {currentUser && (
+                    <code className="text-white">{currentUser?.uid}</code>
+                  )}
+                  {!currentUser && (
+                    <code className="text-white">Login for API Key</code>
+                  )}
                 </pre>
               </div>
 
               <div className="bg-gradient-to-r from-pink-500  to-yellow-500 rounded p-4 flex justify-end text-white flex-col md:w-96 gap-2">
-                <p className="text-xl">User Bucket</p>
+                <p className="text-xl">User Verified</p>
                 <pre className="bg-gray-600 text-white p-4 rounded">
-                  <code className="text-white">Requires Login</code>
+                  {currentUser && (
+                    <code
+                      className={`${
+                        currentUser?.emailVerified
+                          ? "text-blue-600"
+                          : "bg-red-400"
+                      }`}
+                    >
+                      {currentUser?.emailVerified.toString().toUpperCase()}
+                    </code>
+                  )}
+                  {!currentUser && (
+                    <code className="text-white">Requires Login</code>
+                  )}
                 </pre>
               </div>
             </section>
@@ -44,7 +63,7 @@ export default function Dashboard() {
                 </p>
                 <pre className="bg-gray-600 text-white p-4 rounded">
                   <code className="text-white">
-                    https://yourblogapi.com/posts
+                    https://auth-dev-ae419.web.app/api
                   </code>
                 </pre>
                 <p className="">
@@ -84,6 +103,6 @@ export default function Dashboard() {
           </article>
         </div>
       </main>
-    </>
+    </AuthProvider>
   );
 }

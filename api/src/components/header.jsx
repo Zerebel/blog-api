@@ -1,18 +1,66 @@
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import AuthProvider, { AuthContext } from "../services/AuthContext";
+import Blog from "../assets/Blog.png";
+
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prevState) => !prevState);
+  };
+  const { currentUser, signOut_ } = useContext(AuthContext);
   return (
-    <>
-      <header>
-        <nav>
-          <ul className="flex gap-4 py-4 px-8 font-Roboto">
-            <li className="uppercase font-bold">Blog API</li>
-            <div className="outline outline-1 outline-slate-600"></div>
-            <li>View on Github</li>
-            <div className="outline outline-1 outline-slate-600"></div>
-            <li>Issues</li>
+    <AuthProvider>
+      <header className="mb-4 bg-slate-50">
+        <nav className="flex w-full justify-between py-2 md:py-0">
+          <p className="uppercase font-bold md:hidden pl-4">Blog API</p>
+          <ul
+            className={`${
+              isMenuOpen ? "" : "hidden"
+            } justify-between py-2 px-8 font-Roboto shadow-lg absolute md:relative z-50 flex-col md:flex-row bg-inherit h-screen md:h-auto md:flex w-full`}
+          >
+            <div className="flex gap-4 items-center flex-col md:flex-row">
+              <button className="md:hidden self-end" onClick={toggleMenu}>
+                <span className="material-icons-outlined">close</span>
+              </button>
+              <li className="uppercase font-bold flex items-center gap-1">
+                <img src={Blog} className="w-12" alt="BLOG" /> API
+              </li>
+              <div className="outline outline-1 outline-slate-600 h-auto md:w-auto md:h-6 w-full"></div>
+              <li>View on Github</li>
+              <div className="outline outline-1 outline-slate-600 h-auto md:w-auto md:h-6 w-full"></div>
+              <li>Issues</li>
+              <div className="outline outline-1 outline-slate-600 h-auto md:w-auto md:h-6 w-full"></div>
+            </div>
+            {currentUser ? (
+              <div className="flex gap-2 items-center">
+                <span>{currentUser.email}</span>
+                <Link
+                  to={"/login"}
+                  className="py-1 bg-red-700 px-2 text-white"
+                  onClick={() => signOut_()}
+                >
+                  Sign Out
+                </Link>
+              </div>
+            ) : (
+              <div className="flex gap-4 mt-4 md:mt-0 items-center flex-col md:flex-row">
+                <li className="">
+                  <Link to={"/login"}>Log in</Link>
+                </li>
+                <Link to={"/signup"}>
+                  <li className="bg-green-400 text-white px-4 py-2">Sign up</li>
+                </Link>
+              </div>
+            )}
           </ul>
-          <hr className="mb-4" />
+          <button onClick={toggleMenu} className="md:hidden pr-4">
+            <span className="material-icons-outlined">menu</span>
+          </button>
+          <hr className="mb-4 hidden md:block" />
         </nav>
       </header>
-    </>
+    </AuthProvider>
   );
 }
