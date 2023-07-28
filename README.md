@@ -8,9 +8,7 @@ This is a backend API for a blog application that allows users to create view up
 
 - **POST /auth/register**: Register as a new user.
 
-  - Head to:
-
-- [BLOG API](https://auth-dev-ae419.web.app/)
+  - Head to: [BLOG API](https://auth-dev-ae419.web.app/)
 
 - **POST /auth/login**: Authenticate and generate an access token.
 
