@@ -3,7 +3,6 @@
 /* eslint-disable valid-jsdoc */
 /* eslint max-len: ["error", { "code": 900 }]*/
 
-const {Timestamp} = require("firebase-admin/firestore");
 const {logger} = require("firebase-functions/v2");
 
 
@@ -29,16 +28,6 @@ module.exports = async function read(req, res, db) {
       snapshot.forEach((value) => {
         const data = value.data();
 
-        // convert timestamp to date
-        const createdSec = data["created"].seconds;
-        const createdNano = data["created"].nanoseconds;
-        const createStamp = new Timestamp(createdSec, createdNano).toDate();
-
-        // const updatedSec = data["updated"].seconds;
-        // const updatedNano = data["updated"].nanoseconds;
-        // const updateStamp = new Timestamp(updatedSec, updatedNano).toDate();
-
-        logger.log(createStamp, data["updated"]);
         return blogs.push({
           id: value.id,
           ...data,
@@ -77,6 +66,8 @@ module.exports = async function read(req, res, db) {
     }
 
     const macthingResults = allBlogs.filter((blog)=> {
+      if (id === blog["id"]) return true;
+
       if (title) {
         const blogTitle = blog["title"].toLowerCase();
         const searchTitle = title.toLowerCase();
@@ -90,8 +81,6 @@ module.exports = async function read(req, res, db) {
         if (blogAuthor.includes(searchAuthor)) return true;
         return;
       }
-
-      if (id === blog["id"]) return true;
     });
 
     // if the search parameters didn't match anything
@@ -99,7 +88,7 @@ module.exports = async function read(req, res, db) {
 
     // if found, return it
     return {
-      kind: "blog#get",
+      kind: "blog#" + req.method,
       total_count: macthingResults.length,
       blogs: macthingResults,
     };

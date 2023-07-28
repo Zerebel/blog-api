@@ -2,10 +2,17 @@ import { useContext } from "react";
 import Header from "./header";
 import AuthProvider, { AuthContext } from "../services/AuthContext";
 import BlogLogo from "../assets/blog.svg";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SendIcon from "@mui/icons-material/Send";
 
 export default function Dashboard() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, loading, verifyEmail, setLoading } =
+    useContext(AuthContext);
 
+  const handleEmailVerification = async () => {
+    setLoading(true);
+    return await verifyEmail();
+  };
   return (
     <AuthProvider>
       <Header />
@@ -19,11 +26,15 @@ export default function Dashboard() {
           <h3 className="text-2xl font-medium">Start with the basics</h3>
           <article className="flex flex-col gap-8">
             <section className="grid lg:grid-cols-2 px-4 md:px-0 gap-4 min-h-[25vh]">
-              <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded p-4 flex justify-end text-white md:w-96 flex-col gap-2">
+              <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded p-4 flex justify-end text-white md:w-96 md:minw flex-col gap-2">
                 <p>User API key</p>
                 <pre className="bg-gray-600 p-4 rounded">
                   {currentUser && (
-                    <code className="text-white">{currentUser?.uid}</code>
+                    <code className="text-white">
+                      {currentUser?.emailVerified
+                        ? currentUser?.uid
+                        : "Email not verified"}
+                    </code>
                   )}
                   {!currentUser && (
                     <code className="text-white">Login for API Key</code>
@@ -33,16 +44,28 @@ export default function Dashboard() {
 
               <div className="bg-gradient-to-r from-pink-500  to-yellow-500 rounded p-4 flex justify-end text-white flex-col md:w-96 gap-2">
                 <p className="text-xl">User Verified</p>
-                <pre className="bg-gray-600 text-white p-4 rounded">
+                <pre className="bg-gray-600 text-white p-4 rounded flex">
                   {currentUser && (
                     <code
                       className={`${
                         currentUser?.emailVerified
                           ? "text-blue-600"
-                          : "bg-red-400"
-                      }`}
+                          : "text-red-400"
+                      } flex w-full justify-between`}
                     >
                       {currentUser?.emailVerified.toString().toUpperCase()}
+                      {!currentUser?.emailVerified && (
+                        <LoadingButton
+                          loading={loading}
+                          loadingPosition="end"
+                          endIcon={<SendIcon />}
+                          variant="contained"
+                          className="!capitalize !bg-blue-500 !h-7 !px-8"
+                          onClick={handleEmailVerification}
+                        >
+                          Verify Email
+                        </LoadingButton>
+                      )}
                     </code>
                   )}
                   {!currentUser && (

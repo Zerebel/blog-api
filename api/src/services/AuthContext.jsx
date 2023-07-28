@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
+  sendEmailVerification,
 } from "firebase/auth";
 import useLocalStorage from "./use-local-storage";
 import PropTypes from "prop-types";
@@ -99,6 +100,11 @@ export default function AuthProvider({ children }) {
       });
   };
 
+  const verifyEmail = async () => {
+    await sendEmailVerification(auth.currentUser);
+    return setLoading(false);
+  };
+
   const signOut_ = () => {
     return signOut(auth);
   };
@@ -127,6 +133,7 @@ export default function AuthProvider({ children }) {
     setError,
     signInWithGoogle,
     signInWithGithub,
+    verifyEmail,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

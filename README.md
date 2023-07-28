@@ -6,24 +6,11 @@ This is a backend API for a blog application that allows users to create view up
 
 ### Authentication
 
-- **POST /auth/register**: Register a new user.
+- **POST /auth/register**: Register as a new user.
 
-  - Request Body:
+  - Head to:
 
-    ```json
-    {
-      "username": "john_doe",
-      "password": "password123"
-    }
-    ```
-
-  - Response:
-
-    ```json
-    {
-      "message": "User registered successfully"
-    }
-    ```
+- [BLOG API](https://auth-dev-ae419.web.app/)
 
 - **POST /auth/login**: Authenticate and generate an access token.
 

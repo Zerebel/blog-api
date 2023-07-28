@@ -5,7 +5,7 @@
 
 // const {logger} = require("firebase-functions/v2")
 
-module.exports = function create(req, res, db, Timestamp, FieldValue) {
+module.exports = function create(req, res, db) {
   const {title, author, content} = req.body;
 
   if (!title || !author || !content) return res.status(404).json({message: "Invalid parameters passed for API request"});
@@ -25,17 +25,16 @@ module.exports = function create(req, res, db, Timestamp, FieldValue) {
       author: author,
       content: content,
       title: title,
-      created: Timestamp.fromDate(new Date()),
+      created: new Date().toUTCString(),
     };
 
     // add new blog if some blog already exists
     try {
       const res = await userRef.add({
         ...data,
-        updated: Timestamp.fromDate(new Date()),
+        updated: new Date().toUTCString(),
       });
 
-      data.created = data.created.toDate();
       return {
         kind: "blog#post",
         id: res.id,

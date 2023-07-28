@@ -12,7 +12,7 @@ const logger = require("firebase-functions/logger");
 
 // initialization
 const {initializeApp} = require("firebase-admin/app");
-const {getFirestore, Timestamp, FieldValue} = require("firebase-admin/firestore");
+const {getFirestore, Timestamp} = require("firebase-admin/firestore");
 
 initializeApp();
 
@@ -22,10 +22,11 @@ const functions = require("firebase-functions/v2");
 const {beforeUserCreated} = require("firebase-functions/v2/identity");
 const express = require("express");
 const app = express();
+const requestValidator = require("./middleware");
 
 // Middleware
-app.use((req, res, next) => {
-  requestValidator(req, res);
+app.use( async (req, res, next) => {
+  await requestValidator(req, res, db);
   next();
 });
 
@@ -37,45 +38,26 @@ app.get("/", (req, res) => {
 
 app.get("/api", (req, res) => {
   const read = require("./read");
-  return read(req, res, db, Timestamp);
+  return read(req, res, db);
 });
 
 
 app.post("/api", (req, res) => {
   const create = require("./create");
-  return create(req, res, db, Timestamp, FieldValue);
+  return create(req, res, db);
 });
 
 
-app.delete("/api", (req, res) => {
-  res.send({message: "Hello from Delete request"});
+app.delete("/api", async (req, res) => {
+  const remove = require("./remove");
+  remove(req, res, db);
 });
 
-app.put("/api", (req, res) => {
-  res.send({message: "Hello from PUT request"});
+app.put("/api", async (req, res) => {
+  const update = require("./update");
+  return update(req, res, db);
 });
 
-// Application-level Middleware
-const requestValidator = (req, res)=> {
-  const contentType = req.headers["content-type"];
-  const accessControl = req.headers["access-control-request-headers"];
-
-  if (!contentType || !accessControl) {
-    const errorMessage="Missing or invalid request headers";
-    return res.status(404).json({error: {message: errorMessage, type: "HeadersException"}});
-  }
-
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    const errorMessage = "Authorization header missing";
-    return res.status(401).json({error: {message: errorMessage, type: "OAuthException"}});
-  }
-
-  if (authHeader.length !== 35) {
-    const errorMessage = "Unauthorized request";
-    return res.status(403).json({error: {message: errorMessage, type: "OAuthException"}});
-  }
-};
 
 // main api endpoint function
 exports.app = functions.https.onRequest(app);
@@ -89,6 +71,7 @@ exports.beforeUserCreated = beforeUserCreated((event)=> {
     content: "This is a sample content",
     title: "Sample Title",
     created: Timestamp.fromDate(new Date()),
+    owner: user.email,
   };
 
   // Add a new sample document with the uid
@@ -96,6 +79,10 @@ exports.beforeUserCreated = beforeUserCreated((event)=> {
 
   docRef.then((result)=>logger.log(result)).catch((error)=>logger.log(error));
 
-  return;
+  if (user.email && !user.emailVerified && event.eventType.includes(":github.com")) {
+    return {
+      emailVerified: true,
+    };
+  }
 });
 

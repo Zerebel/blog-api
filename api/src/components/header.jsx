@@ -28,9 +28,27 @@ export default function Header() {
                 <img src={Blog} className="w-12" alt="BLOG" /> API
               </li>
               <div className="outline outline-1 outline-slate-600 h-auto md:w-auto md:h-6 w-full"></div>
-              <li>View on Github</li>
+              <li>
+                <a
+                  href="https://github.com/Zerebel/blog-api"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:font-semibold"
+                >
+                  View on Github
+                </a>
+              </li>
               <div className="outline outline-1 outline-slate-600 h-auto md:w-auto md:h-6 w-full"></div>
-              <li>Issues</li>
+              <li>
+                <a
+                  href="https://github.com/Zerebel/blog-api/issues"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:font-semibold"
+                >
+                  Issues
+                </a>
+              </li>
               <div className="outline outline-1 outline-slate-600 h-auto md:w-auto md:h-6 w-full"></div>
             </div>
             {currentUser ? (
