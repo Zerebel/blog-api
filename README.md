@@ -1,6 +1,6 @@
 ## 📚 Blog API
 
-This is a backend API for a blog application that allows users to create view update and delete posts. Users can authenticate and perform actions on their own posts.
+This is a backend API for a blog application that allows users to create, view, update, and delete posts. Users can authenticate and perform actions on their own posts.
 
 ## 📖 API Documentation
 
@@ -16,24 +16,47 @@ This is a backend API for a blog application that allows users to create view up
 
 ### Post Endpoints
 
-- **GET /posts**: Get all posts.
+- **GET /blogs**: Get all posts.
 
-  - Response:
+  - Request:
 
-    ```json
-    [
-      {
-        "title": "First Post",
-        "content": "This is the content of the first post.",
-        "author": "user_id"
-      }
-      {
-        "title": "Second Post",
-        "content": "This is the content of the second post.",
-        "author": "user_id"
-      }
-    ]
-    ```
+```javascript
+const url = "https://auth-dev-ae419.web.app/api";
+const authorizationToken = "your api key here";
+
+const fetchData = async () => {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+      "Access-Control-Request-Headers": "*",
+      Authorization: "Bearer " + authorizationToken,
+    },
+  });
+
+  const data = await response.json();
+  console.log(data);
+};
+
+fetchData();
+```
+
+- Response:
+
+  ```json
+  [
+    {
+      "title": "First Post",
+      "content": "This is the content of the first post.",
+      "author": "user_id"
+    }
+    {
+      "title": "Second Post",
+      "content": "This is the content of the second post.",
+      "author": "user_id"
+    }
+  ]
+  ```
 
 - **GET /posts/:postId**: Get a specific post by ID.
 
