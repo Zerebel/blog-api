@@ -10,7 +10,7 @@ This is a backend API for a blog application that allows users to create view up
 
   - Head to: [BLOG API](https://auth-dev-ae419.web.app/)
 
-- **POST /auth/login**: Authenticate and generate an access token.
+- **Authenticate and generate an access token**
 
   - Verify your Email to access the API Key
 
