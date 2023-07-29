@@ -154,7 +154,7 @@ This is a backend API for a blog application that allows users to create, view, 
 
 ## 🔐 Authentication and Authorization
 
-To access protected routes (create update delete posts) include the access token in the request headers:
+To access protected routes (view, create, update, delete a posts) include the access token in the request headers:
 
 `nAuthorization: Bearer <access_token>n`
 
