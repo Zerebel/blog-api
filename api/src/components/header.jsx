@@ -12,7 +12,7 @@ export default function Header() {
   const { currentUser, signOut_ } = useContext(AuthContext);
   return (
     <AuthProvider>
-      <header className="mb-4 bg-slate-50">
+      <header className="w-full bg-slate-50 fixed top-0 left-0">
         <nav className="flex w-full justify-between py-2 md:py-0">
           <p className="uppercase font-bold md:hidden pl-4">Blog API</p>
           <ul

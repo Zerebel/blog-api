@@ -87,6 +87,7 @@ export const GithubButton = ({ onClick, text, loading }) => {
 
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useEffect, useState } from "react";
 
 export default function LinearIndeterminate() {
   return (
@@ -95,3 +96,44 @@ export default function LinearIndeterminate() {
     </Box>
   );
 }
+
+export const GitHubContributions = () => {
+  const [contributors, setContributors] = useState([]);
+
+  useEffect(() => {
+    const apiUrl = "https://api.github.com/repos/Zerebel/blog-api/contributors";
+
+    async function getContributors() {
+      const response = await fetch(apiUrl);
+      const contributors = await response.json();
+      setContributors(contributors);
+    }
+
+    getContributors();
+  }, []);
+
+  return (
+    <footer className="py-2 w-full max-w-3xl">
+      <div className="container mx-auto">
+        <ul className="flex flex-wrap">
+          {contributors.map((contributor) => (
+            <li key={contributor.id} className="mb-2 flex items-center gap-4">
+              <a
+                href={contributor.html_url}
+                target="_blank"
+                rel="noreferrer"
+                className=" text-slate-600"
+              >
+                <img
+                  src={contributor.avatar_url}
+                  className="h-10 w-10 rounded-full pointer-events-none"
+                  alt={contributor.login}
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </footer>
+  );
+};

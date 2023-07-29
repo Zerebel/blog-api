@@ -16,9 +16,15 @@ This is a backend API for a blog application that allows users to create, view, 
 
 ### Post Endpoints
 
+-- URL endpoint:
+
+```javascript
+"https://auth-dev-ae419.web.app/api";
+```
+
 - **GET /blogs**: Get all posts.
 
-  - Request:
+- Request:
 
 ```javascript
 const url = "https://auth-dev-ae419.web.app/api";
@@ -46,9 +52,11 @@ fetchData();
   ```json
   [
     {
-      "title": "First Post",
+      "author": "John Doe",
       "content": "This is the content of the first post.",
-      "author": "user_id"
+      "created": "Thu, 06 Jul 2023 11:36:09 GMT",
+      "title": "First Post",
+      "updated": "Fri, 21 Jul 2023 18:16:02 GMT",
     }
     {
       "title": "Second Post",
