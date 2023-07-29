@@ -22,70 +22,102 @@ This is a backend API for a blog application that allows users to create, view, 
 "https://auth-dev-ae419.web.app/api";
 ```
 
-- **GET /blogs**: Get all posts.
+- **GET /api**: Get all posts.
 
 - Request:
 
 ```javascript
-const url = "https://auth-dev-ae419.web.app/api";
-const authorizationToken = "your api key here";
 
-const fetchData = async () => {
-  const response = await fetch(url, {
+// strictly required authorization method and headers
+ {
     method: "GET",
     headers: {
       "content-type": "application/json",
       "Access-Control-Request-Headers": "*",
-      Authorization: "Bearer " + authorizationToken,
+      Authorization: "Bearer " + 'your api token',
     },
-  });
+  }
 
-  const data = await response.json();
-  console.log(data);
-};
 
-fetchData();
 ```
 
 - Response:
 
   ```json
   [
-    {
-      "author": "John Doe",
-      "content": "This is the content of the first post.",
-      "created": "Thu, 06 Jul 2023 11:36:09 GMT",
-      "title": "First Post",
-      "updated": "Fri, 21 Jul 2023 18:16:02 GMT",
-    }
-    {
-      "title": "Second Post",
-      "content": "This is the content of the second post.",
-      "author": "user_id"
-    }
+  {
+    "author": "John Doe",
+    "content": "This is the content of the first post.",
+    "created": "Thu, 06 Jul 2023 11:36:09 GMT",
+    "title": "First Post",
+    "updated": "Fri, 21 Jul 2023 18:16:02 GMT",
+  }
+  {
+    "author": "Jane Doe",
+    "title": "Second Post",
+    "content": "This is the content of the second post.",
+    "................"
+  }
   ]
   ```
 
-- **GET /posts/:postId**: Get a specific post by ID.
+- **GET /api?blogId**: Get a specific post by ID.
+  ##or
+- **GET /api?author**: Get a specific post by author.
+  ##or
+- **GET /api?title**: Get a specific post by title.
 
   - Response:
 
     ```json
     {
+      "author": "Jane Doe",
       "title": "First Post.",
       "content": "Lorem ipsum dolor sit amet consectetur adipiscing elit.",
-      "author": "user_id"
+      "........................."
     }
     ```
 
-- **POST /posts**: Create a new post (requires authentication).
+- **POST /api**: Create a new post (requires authentication).
 
   - Request Body:
 
-    ```json
+    ```javascript
+
+    // strictly required authorization method and headers
     {
-      "title": "New Post",
-      "content": "Sed vitae nibh vehicula malesuada felis vel tempor ipsum."
+    method: "POST",
+    headers: {
+    "content-type": "application/json",
+    "Access-Control-Request-Headers": "\*",
+    Authorization: "Bearer " + 'your api token',
+    },
+    body: JSON.stringify(data),
+    }
+
+    ```
+
+  - Response:
+
+  ```json
+  {
+    "author": "Jane Smith",
+    "content": "Thank you all for joining me on this journey! Here's the exciting content of the latest adventure.",
+    "created": "Tue, 29 Jul 2023 14:22:37 GMT",
+    "title": "An Epic Adventure Begins",
+    "updated": "Wed, 02 Aug 2023 09:45:19 GMT"
+  }
+  ```
+
+- **PUT /api/?blogID**: Update a post (requires authentication).
+
+  - Request Body:
+
+    ```javascript
+    {
+      method: "PUT",
+      <!--* Headers removed for brevity -->
+      body: JSON.stringify(data),
     }
     ```
 
@@ -93,30 +125,24 @@ fetchData();
 
     ```json
     {
-      "message": "Post created successfully"
+      "author": "Jane Smith",
+      "content": "Exciting news! Stay tuned for updates.",
+      "created": "Tue, 29 Jul 2023 14:22:37 GMT",
+      "title": "An Epic Adventure Begins",
+      "updated": "Wed, 02 Aug 2023 09:45:19 GMT"
     }
     ```
 
-- **PUT /posts/:postId**: Update a post (requires authentication).
+- **DELETE /api?blogId**: Delete a post (requires authentication).
 
   - Request Body:
 
-    ```json
+    ```javascript
     {
-      "title": "Updated Post",
-      "content": "Vestibulum ultrices dui vel ex finibus at consectetur mauris maximus."
+      method: "DELETE",
+      <!--* Headers removed for brevity -->
     }
     ```
-
-  - Response:
-
-    ```json
-    {
-      "message": "Post updated successfully"
-    }
-    ```
-
-- **DELETE /posts/:postId**: Delete a post (requires authentication).
 
   - Response:
 
@@ -136,11 +162,11 @@ Make sure to replace `<access_token>` with the actual token received during logi
 
 ## 🛠️ Technologies Used
 
-- Express.js: Fast and minimalist web framework for Node.js
-- MongoDB: NoSQL database for storing post and user data
-- bcrypt: Password hashing library for secure storage
-- jsonwebtoken: Token-based authentication library for generating and verifying access tokens
-- dotenv: Environment variable management
+- Firebase: Cloud platform for web and mobile app development.
+- ReactJS: JavaScript library for building user interfaces.
+- Vite: Fast build tool for modern web apps.
+- Tailwind CSS: Utility-first CSS framework.
+- Material-UI: React UI framework with Material Design components.
 
 ## 📜 License
 
