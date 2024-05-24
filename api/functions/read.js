@@ -65,7 +65,7 @@ module.exports = async function read(req, res, db) {
       return res.status(400).json({error: "ID must be at least 20 characters"});
     }
 
-    const macthingResults = allBlogs.filter((blog)=> {
+    const matchingResults = allBlogs.filter((blog)=> {
       if (id === blog["id"]) return true;
 
       if (title) {
@@ -84,12 +84,12 @@ module.exports = async function read(req, res, db) {
     });
 
     // if the search parameters didn't match anything
-    if (!macthingResults.length > 0) return res.status(500).json({error: "Could not find any blogs matching the search criteria"});
+    if (!matchingResults.length > 0) return res.status(500).json({error: "Could not find any blogs matching the search criteria"});
 
     // if found, return it
     return {
       kind: "blog#" + req.method,
-      total_count: macthingResults.length,
+      total_count: matchingResults.length,
       blogs: macthingResults,
     };
   };
