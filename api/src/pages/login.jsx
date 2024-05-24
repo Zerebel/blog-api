@@ -28,7 +28,7 @@ export default function Login() {
         <Link to={"/"}>Blog API</Link>
       </p>
       <div className="flex flex-col gap-4 items-center justify-center h-screen w-fit">
-        <h1 className="font-semibold text-4xl">Welcome back</h1>
+        <h1 className="font-semibold text-4xl text-balance">Welcome back</h1>
         <div className="flex justify-center">
           <FormControl
             component="form"
