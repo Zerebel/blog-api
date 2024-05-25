@@ -67,7 +67,7 @@ exports.beforeUserCreated = beforeUserCreated((event)=> {
   const user = event.data;
 
   const data = {
-    author: "Sample",
+    author: "Sample Data",
     content: "This is a sample content",
     title: "Sample Title",
     created: Timestamp.fromDate(new Date()),
