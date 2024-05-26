@@ -21,7 +21,7 @@ export default function Header() {
             } justify-between py-2 px-8 font-Roboto shadow-lg absolute md:relative z-50 flex-col md:flex-row bg-inherit h-screen md:h-auto md:flex w-full`}
           >
             <div className="flex gap-4 items-center flex-col md:flex-row">
-              <button className="md:hidden self-end" onClick={toggleMenu}>
+              <button className="md:hidden self-end block" onClick={toggleMenu}>
                 <span className="material-icons-outlined">close</span>
               </button>
               <li className="uppercase font-bold flex items-center gap-1">
